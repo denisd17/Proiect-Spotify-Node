@@ -1,9 +1,9 @@
 const db = require('../models');
 
-module.exports.getAllArtists = async (req,res) => {
+module.exports.getAllAlbums = async (req,res) => {
     try {
-        const allArtists = await db.Artist.findAll();
-        res.send(allArtists);
+        const allAlbums = await db.Album.findAll();
+        res.send(allAlbums);
       } catch (error) {
         console.error('Something went wrong');
         res.send({
@@ -12,18 +12,20 @@ module.exports.getAllArtists = async (req,res) => {
       }
 }
 
-module.exports.createArtist = async (req,res)=> {
+module.exports.createAlbum = async (req,res)=> {
     const {
         name,
+        link,
     } = req.body
     try{
-    const newArtist = await db.Artist.create({
+    const newAlbum = await db.Album.create({
         name,
+        link,
         createdAt: new Date(),
         updatedAt: new Date(),
     });
     
-    res.status(201).send(newArtist);
+    res.status(201).send(newAlbum);
 } catch(error){
     res.send({
         error:"Something went wrong"
@@ -33,10 +35,10 @@ module.exports.createArtist = async (req,res)=> {
 
 
 
-module.exports.getArtistById = async ({params},res)=> {
+module.exports.getAlbumById = async ({params},res)=> {
     try{
     const key = params.id;
-    const search = await db.Artist.findByPk(key);
+    const search = await db.Album.findByPk(key);
     if (search === null) {
     res.send("Not found!")
     } else {
@@ -50,14 +52,16 @@ module.exports.getArtistById = async ({params},res)=> {
 }
 
 
-module.exports.updateArtist = async (req,res)=> {
+module.exports.updateAlbum = async (req,res)=> {
     const id = req.params.id
     const {
         name,
+        link,
     } = req.body
     try{
-    await db.Artist.update({
+    await db.Album.update({
         name,
+        link,
         createdAt: new Date(),
         updatedAt: new Date(),
     },
@@ -66,7 +70,7 @@ module.exports.updateArtist = async (req,res)=> {
         id,
     }
     });
-    res.send(await db.Artist.findByPk(id));
+    res.send(await db.Album.findByPk(id));
 } catch(error){
     res.send({
         error:"Something went wrong"
@@ -75,10 +79,10 @@ module.exports.updateArtist = async (req,res)=> {
 }
 
 
-module.exports.deleteArtist = async (req,res)=> {
+module.exports.deleteAlbum = async (req,res)=> {
     try{
     const id = req.params.id
-    await db.Artist.destroy({
+    await db.Album.destroy({
         where: {
           id,
         }
