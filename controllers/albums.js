@@ -94,3 +94,38 @@ module.exports.deleteAlbum = async (req,res)=> {
         })
     }
 }
+
+
+
+module.exports.addAlbumArtist = async (req, res) => {
+    const artistId = req.params.artistId;
+    const albumId = req.params.albumId;
+
+    try {
+      const artist = await db.Artist.findByPk(artistId);
+      const album = await db.Album.findByPk(albumId);
+      if(!artist) {
+        throw new Error("Artist not found");
+      }
+  
+      if(!album) {
+        throw new Error("Album not found");
+      }
+      await album.setArtists(artist);
+
+      const updatedAlbums = await db.Album.findByPk(albumId);
+      const updatedAlbumArtist = await updatedAlbums.getArtists();
+
+      const response = {
+        ...updatedAlbums.toJSON(),
+        tags: updatedAlbumArtist,
+      }
+      res.status(201).send(response);
+    } catch (error) {
+      console.error(error);
+      res.send({
+        error: "Something went wrong",
+      });
+    }
+}
+  

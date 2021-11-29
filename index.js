@@ -6,7 +6,7 @@ const authorizationMiddleware = require('./middlewares/authorization');
 const loginHandler = require('./controllers/login');
 const {getAllArtists, getArtistById, createArtist, updateArtist, deleteArtist} = require('./controllers/artists')
 
-const {getAllAlbums, getAlbumById, createAlbum, updateAlbum, deleteAlbum} = require('./controllers/albums')
+const {getAllAlbums, getAlbumById, createAlbum, updateAlbum, deleteAlbum, addAlbumArtist} = require('./controllers/albums')
 
 const app = express();
 
@@ -23,6 +23,8 @@ app.get("/artists/:id", authorizationMiddleware, getArtistById);
 app.post("/artists", authorizationMiddleware, createArtist);
 app.put("/artists/:id", authorizationMiddleware, updateArtist);
 app.delete("/artists/:id", authorizationMiddleware, deleteArtist);
+
+app.post("/albums/:albumId/artists/:artistId", addAlbumArtist)
 
 app.get("/albums", authorizationMiddleware, getAllAlbums);
 app.get("/albums/:id", authorizationMiddleware, getAlbumById);
