@@ -90,3 +90,35 @@ module.exports.deleteArtist = async (req,res)=> {
         })
     }
 }
+
+module.exports.addArtistSong = async (req, res) => {
+    const songId = req.params.songId;
+    const artistId = req.params.artistId;
+
+    try {
+      const song = await db.Song.findByPk(songId);
+      const artist = await db.Artist.findByPk(artistId);
+      if(!song) {
+        throw new Error("Song not found");
+      }
+  
+      if(!artist) {
+        throw new Error("Artist not found");
+      }
+      await artist.setSongs(song);
+
+      const updatedArtists = await db.Artist.findByPk(artistId);
+      const updatedArtistSong = await updatedArtists.getSongs();
+
+      const response = {
+        ...updatedArtists.toJSON(),
+        tags: updatedArtistSong,
+      }
+      res.status(201).send(response);
+    } catch (error) {
+      console.error(error);
+      res.send({
+        error: "Something went wrong",
+      });
+    }
+}

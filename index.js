@@ -4,11 +4,12 @@ const bodyParser = require('body-parser');
 const { port } = require('./config/express');
 const authorizationMiddleware = require('./middlewares/authorization');
 const loginHandler = require('./controllers/login');
-const {getAllArtists, getArtistById, createArtist, updateArtist, deleteArtist} = require('./controllers/artists')
+const {getAllArtists, getArtistById, createArtist, updateArtist, deleteArtist, addArtistSong} = require('./controllers/artists')
 
-const {getAllAlbums, getAlbumById, createAlbum, updateAlbum, deleteAlbum, addAlbumArtist} = require('./controllers/albums');
+const { getAllAlbums, getAlbumById, createAlbum, updateAlbum, deleteAlbum, addAlbumArtist} = require('./controllers/albums');
 const { getAllUsers, getUserById, createUser, updateUser, deleteUser, likesSong, getUserPlaylists } = require('./controllers/users');
-const { getAllPlaylists, getPlaylistById, createPlaylist, updatePlaylist, deletePlaylist } = require('./controllers/playlists');
+const { getAllPlaylists, getPlaylistById, createPlaylist, updatePlaylist, deletePlaylist, addPlaylistSong } = require('./controllers/playlists');
+const { getAllSongs, getSongById, createSong, updateSong, deleteSong } = require('./controllers/songs');
 
 const app = express();
 
@@ -16,6 +17,11 @@ app.use(bodyParser.json());
 
 app.post("/login", loginHandler);
 
+app.get("/songs", authorizationMiddleware, getAllSongs);
+app.get("/songs/:id", authorizationMiddleware, getSongById);
+app.post("/songs/:albumId", authorizationMiddleware, createSong);
+app.put("/songs/:id", authorizationMiddleware, updateSong);
+app.delete("/songs/:id", authorizationMiddleware, deleteSong);
 
 app.get("/artists", authorizationMiddleware, getAllArtists);
 app.get("/artists/:id", authorizationMiddleware, getArtistById);
@@ -23,7 +29,8 @@ app.post("/artists", authorizationMiddleware, createArtist);
 app.put("/artists/:id", authorizationMiddleware, updateArtist);
 app.delete("/artists/:id", authorizationMiddleware, deleteArtist);
 
-app.post("/albums/:albumId/artists/:artistId", addAlbumArtist)
+app.post("/albums/:albumId/artists/:artistId", addAlbumArtist);
+app.post("/artists/:artistId/songs/:songId", addArtistSong);
 
 app.get("/albums", authorizationMiddleware, getAllAlbums);
 app.get("/albums/:id", authorizationMiddleware, getAlbumById);
@@ -46,6 +53,7 @@ app.post("/playlists/:userId", authorizationMiddleware, createPlaylist);
 app.put("/playlists/:id", authorizationMiddleware, updatePlaylist);
 app.delete("/playlists/:id", authorizationMiddleware, deletePlaylist);
 
+app.post("/playlists/:playlistId/songs/:songId", addPlaylistSong);
 
 app.listen(port, () => {
     console.log("Server started on", port);

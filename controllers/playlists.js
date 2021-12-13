@@ -119,3 +119,35 @@ module.exports.deletePlaylist = async (req,res)=> {
         })
     }
 }
+
+module.exports.addPlaylistSong = async (req, res) => {
+    const songId = req.params.songId;
+    const playlistId = req.params.playlistId;
+
+    try {
+      const song = await db.Song.findByPk(songId);
+      const playlist = await db.Playlist.findByPk(playlistId);
+      if(!song) {
+        throw new Error("Song not found");
+      }
+  
+      if(!playlist) {
+        throw new Error("Playlist not found");
+      }
+      await playlist.setSongs(song);
+
+      const updatedPlaylists = await db.Playlist.findByPk(playlistId);
+      const updatedPlaylistSong = await updatedPlaylists.getSongs();
+
+      const response = {
+        ...updatedPlaylists.toJSON(),
+        tags: updatedPlaylistSong,
+      }
+      res.status(201).send(response);
+    } catch (error) {
+      console.error(error);
+      res.send({
+        error: "Something went wrong",
+      });
+    }
+}
