@@ -11,9 +11,16 @@ const { getAllUsers, getUserById, createUser, updateUser, deleteUser, likesSong,
 const { getAllPlaylists, getPlaylistById, createPlaylist, updatePlaylist, deletePlaylist, addPlaylistSong } = require('./controllers/playlists');
 const { getAllSongs, getSongById, createSong, updateSong, deleteSong } = require('./controllers/songs');
 
+const { graphqlHTTP } = require('express-graphql');
+const schema = require('./graphql');
 const app = express();
 
 app.use(bodyParser.json());
+
+app.use('/graphql', graphqlHTTP({
+  schema,
+  graphiql: true,
+}))
 
 app.post("/login", loginHandler);
 

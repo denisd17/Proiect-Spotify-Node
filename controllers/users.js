@@ -72,14 +72,13 @@ module.exports.updateUser = async (req,res)=> {
     const id = req.params.id
     const { username, password, email} = req.body 
     const user = db.User.findByPk(id);
-    const createdAt = user.get('createdAt');
+
     try{
 
         await db.User.update({
             username,
             password,
             email,
-            createdAt,
             updatedAt: new Date(),
         },
         {
