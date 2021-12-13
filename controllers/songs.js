@@ -18,7 +18,7 @@ module.exports.getAllSongs = async (req,res) => {
 
 module.exports.createSong = async (req,res)=> {
 
-    const albumId = req.params.userId;
+    const albumId = req.params.albumId;
     try{
         const {name,
                link,
@@ -75,7 +75,6 @@ module.exports.updateSong = async (req,res)=> {
            link,
         } = req.body; 
     const song = db.Song.findByPk(id);
-    const createdAt = song.get('createdAt');
 
     try{
 

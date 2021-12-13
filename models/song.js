@@ -11,16 +11,20 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       models.Song.belongsToMany(models.User, {
-        through: 'Likes'
+        through: 'Likes',
+        onDelete: 'cascade'
       });
       models.Song.belongsToMany(models.Playlist, {
-        through: 'PlaylistsSongs'
+        through: 'PlaylistsSongs',
+        onDelete: 'cascade'
       });
       models.Song.belongsToMany(models.Artist, {
-        through: 'SongsArtists'
+        through: 'SongsArtists',
+        onDelete: 'cascade'
       });
       models.Song.belongsTo(models.Album, {
-        foreignKey: 'albumId'
+        foreignKey: 'albumId',
+        onDelete: 'cascade'
       });
     }
   };

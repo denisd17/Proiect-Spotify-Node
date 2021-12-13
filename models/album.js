@@ -10,9 +10,11 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      models.Album.hasMany(models.Song);
+      models.Album.hasMany(models.Song,
+        {onDelete: 'cascade'});
       models.Album.belongsToMany(models.Artist, {
-        through: 'AlbumsArtists'
+        through: 'AlbumsArtists',
+        onDelete: 'cascade'
       });
     }
   };

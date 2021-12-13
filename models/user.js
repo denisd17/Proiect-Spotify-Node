@@ -11,9 +11,10 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       models.User.belongsToMany(models.Song, {
-        through: 'Likes'
+        through: 'Likes',
+        onDelete: 'cascade'
       });
-      models.User.hasMany(models.Playlist);
+      models.User.hasMany(models.Playlist, {onDelete:'cascade'});
     }
   };
   User.init({
