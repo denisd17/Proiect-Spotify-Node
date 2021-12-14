@@ -73,14 +73,11 @@ module.exports.updatePlaylist = async (req,res)=> {
     const id = req.params.id
     const { name} = req.body 
     const playlist = db.User.findByPk(id);
-    const createdAt = playlist.get('createdAt');
 
     try{
 
         await db.Playlist.update({
             name,
-            createdAt,
-            updatedAt: new Date(),
         },
         {
             where:{

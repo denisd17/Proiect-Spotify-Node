@@ -72,14 +72,12 @@ module.exports.updateUser = async (req,res)=> {
     const id = req.params.id
     const { username, password, email} = req.body 
     const user = db.User.findByPk(id);
-
     try{
 
         await db.User.update({
             username,
             password,
             email,
-            updatedAt: new Date(),
         },
         {
             where:{
@@ -112,7 +110,7 @@ module.exports.deleteUser = async (req,res)=> {
         res.send("Success");
 
     } catch(error){
-
+        console.log(error)
         res.send({
             error:"Something went wrong"
         })
@@ -141,12 +139,10 @@ module.exports.likesSong = async (req,res) => {
             throw new Error ("Song not found!");
        
         }
-
-        if (likes.includes(user)) {
-
-            throw new Error("User already liked the song!");
+        var l = Array.prototype.slice.call(likes)
+        if(l.includes(user)){
+            throw("Userul a mai apreciat")
         }
-        
         await user.addSong(song);
         const updatedSong = await db.Song.findByPk(songId);
         const updatedLikes = await updatedSong.getUsers();
@@ -158,7 +154,7 @@ module.exports.likesSong = async (req,res) => {
         res.status(201).send(response);
 
     } catch (error){
-
+        console.log(error)
         res.send({
             error: "Something went wrong"
         })
@@ -189,9 +185,9 @@ module.exports.dislikesSong = async (req,res) => {
        
         }
 
-        if (!likes.includes(user)) {
-
-            throw new Error("User doesn't like the song!");
+        var l = Array.prototype.slice.call(likes)
+        if(!l.includes(user)){
+            throw("Userul a mai apreciat")
         }
         
         const index = likes.indexOf(user);

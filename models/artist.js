@@ -11,10 +11,12 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       models.Artist.belongsToMany(models.Album, {
-        through: 'AlbumsArtists'
+        through: 'AlbumsArtists',
+        onDelete: 'cascade'
       });
       models.Artist.belongsToMany(models.Song, {
-        through: 'SongsArtists'
+        through: 'SongsArtists',
+        onDelete: 'cascade'
       });
     }
   };
