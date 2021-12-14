@@ -17,7 +17,7 @@ const app = express();
 
 app.use(bodyParser.json());
 
-app.use('/graphql', graphqlHTTP({
+app.use('/graphql', authorizationMiddleware, graphqlHTTP({
   schema,
   graphiql: true,
 }))
