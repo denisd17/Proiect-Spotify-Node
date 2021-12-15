@@ -1,10 +1,13 @@
 const { GraphQLObjectType } = require("graphql");
 const loginHandler = require("../repository/login");
+const { updateSong } = require("../repository/song");
 const { createUser, updateUser } = require("../repository/users");
 const createUserInputType = require("./inputTypes/createUserInputType");
 const loginInputType = require("./inputTypes/loginInputType");
+const updateSongInputType = require("./inputTypes/updateSongInputType");
 const updateUserInputType = require("./inputTypes/updateUserInputType");
 const loginResultType = require("./types/loginResultType");
+const songType = require("./types/songType");
 const userType = require("./types/userType");
 
 const mutationType = new GraphQLObjectType({
@@ -44,6 +47,17 @@ const mutationType = new GraphQLObjectType({
             },
             resolve: async(source, args, context) => {
                 return updateUser(args.updateUserInput, context);
+            }
+        },
+        updateSong: {
+            type: songType,
+            args:{
+                updateSongInput:{
+                    type: updateSongInputType,
+                }
+            },
+            resolve: async (source, args, context) => {
+                return updateSong(args.updateSongInput, context);
             }
         }
     },

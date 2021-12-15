@@ -2,7 +2,8 @@ const { GraphQLObjectType, GraphQLString, GraphQLList, GraphQLID, GraphQLNonNull
 const db = require("../models");
 
 const userType = require('./types/userType')
-const playlistType = require('./types/playlistType')
+const playlistType = require('./types/playlistType');
+const songType = require("./types/songType");
 
 
 
@@ -26,6 +27,12 @@ const queryType = new GraphQLObjectType({
                 return await db.User.findByPk(id);
             }
         },
+        songs:{
+            type: new GraphQLList(songType),
+            resolve: async() => {
+                return db.Song.findAll();
+            }
+        }
     }
 })
 
