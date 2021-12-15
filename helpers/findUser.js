@@ -1,11 +1,17 @@
-const findUser = (username, password) => {
-    if(username === 'admin' && password === '123456789') {
-      return {
-        username,
+const db = require("../models");
+
+const findUser = async (username, password) => {
+    const user = await db.User.findOne({
+      where: {
+          username,
+          password,
       }
-    } else {
+    }).then(user => {
+      if(user) {
+        return user.id;
+      }
       return null;
-    }
+    });
   }
   
   module.exports = findUser; 

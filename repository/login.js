@@ -4,7 +4,7 @@ const { MY_SECRET_KEY } = require('../config/jwt');
 const db = require('../models');
 
 const loginHandler = async (email, password) => {
-    const user = await db.user.findOne({
+    const user = await db.User.findOne({
         where:{
             email,
             password,
