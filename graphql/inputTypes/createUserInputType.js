@@ -8,6 +8,9 @@ const createUserInputType = new GraphQLInputObjectType({
         },
         password:{
             type: new GraphQLNonNull(GraphQLString)
+        },
+        username:{
+            type: new GraphQLNonNull(GraphQLString)
         }
     }
 });

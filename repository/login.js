@@ -10,7 +10,7 @@ const loginHandler = async (email, password) => {
             password,
         }
     });
-
+    console.log(user);
     if(user){
         return jwt.sign({
             id: user.id,

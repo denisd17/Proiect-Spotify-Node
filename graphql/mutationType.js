@@ -1,5 +1,5 @@
 const { GraphQLObjectType } = require("graphql");
-const loginHandler = require("../controllers/login");
+const loginHandler = require("../repository/login");
 const { createUser, updateUser } = require("../repository/users");
 const createUserInputType = require("./inputTypes/createUserInputType");
 const loginInputType = require("./inputTypes/loginInputType");
