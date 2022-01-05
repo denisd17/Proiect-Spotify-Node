@@ -32,6 +32,12 @@ const queryType = new GraphQLObjectType({
             resolve: async() => {
                 return db.Song.findAll();
             }
+        },
+        playlists:{
+            type: new GraphQLList(playlistType),
+            resolve: async() => {
+                return db.Playlist.findAll();
+            }
         }
     }
 })

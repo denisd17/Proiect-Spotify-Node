@@ -7,12 +7,12 @@ const playlistType = new GraphQLObjectType({
     fields:{
         id: { type: GraphQLID},
         name: { type: GraphQLString},
-       /* songs:{
+        songs:{
             type: GraphQLList(songType),
             resolve: async(source) => {
                 return await source.getSongs();
             }
-        },
+        },/*
         user:{
             type: userType,
             resolve: async(source) => {

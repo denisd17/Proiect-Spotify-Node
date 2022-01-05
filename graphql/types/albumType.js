@@ -13,7 +13,7 @@ const albumType = new GraphQLObjectType({
             resolve: async (source) => {
                 return await source.getSongs();
             }
-        },
+        },/*
         artists:{
             type: GraphQLList(artistType),
             resolve: async(source) => {

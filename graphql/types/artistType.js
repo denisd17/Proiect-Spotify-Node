@@ -6,12 +6,12 @@ const artistType = new GraphQLObjectType({
     fields:{
         id: { type: GraphQLID},
         name: { type: GraphQLString},
-        /*albums: {
+        albums: {
             type: GraphQLList(albumType),
             resolve: async(source) => {
                 return await source.getAlbums();
             }
-        }*/
+        }
     
     }
 })
