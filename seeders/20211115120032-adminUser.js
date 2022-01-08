@@ -9,6 +9,15 @@ module.exports = {
       email: "admin@spotify.com",
       createdAt: new Date(),
       updatedAt: new Date(),
+      roleId: 2,
+    });
+    data.push({
+      username: "user",
+      password: "123456789",
+      email: "user@gmail.com",
+      createdAt: new Date(),
+      updatedAt: new Date(),
+      roleId: 1,
     });
 
     await queryInterface.bulkInsert('Users', data, {});

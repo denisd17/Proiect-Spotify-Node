@@ -15,12 +15,22 @@ module.exports = (sequelize, DataTypes) => {
         onDelete: 'cascade'
       });
       models.User.hasMany(models.Playlist, {onDelete:'cascade'});
+      models.User.belongsTo(models.Role, {
+        foreignKey: 'roleId',
+      });
+    }
+
+    async can(permissionName){
+      const role = await this.getRole();
+      const permissions = role.permissions;
+      return permissions.indexOf(permissionName) !== -1;
     }
   };
   User.init({
     username: DataTypes.STRING,
     password: DataTypes.STRING,
-    email: DataTypes.STRING
+    email: DataTypes.STRING,
+    roleId: DataTypes.INTEGER,
   }, {
     sequelize,
     modelName: 'User',

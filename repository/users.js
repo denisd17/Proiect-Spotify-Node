@@ -1,3 +1,4 @@
+const Permissions = require('../config/permissions');
 const db = require('../models');
 
 module.exports.getAllUsers = async () => {
@@ -17,13 +18,19 @@ module.exports.getUserById = async (id) => {
   return await db.User.findByPk(id);
 }
 
-module.exports.createUser = async (args) => {
+module.exports.createUser = async (args, context) => {
+  const { user } = context;
+  const hasPerm = await user.can(Permissions.CREATE_USER);
+  if(!hasPerm){
+    return false
+  }
   const { email, password, username } = args;
   try {
     const newUser = await db.User.create({
         username,
         password,
         email,
+        roleId,
         
     });
 
@@ -38,15 +45,14 @@ module.exports.createUser = async (args) => {
 
 module.exports.updateUser = async (args, context) => {
   const { user } = context;
-  
-  if(!user) {
-    return null;
-  }
 
   const { id } = user;
   
   const { email, username } = args;
-
+  const hasPerm = await user.can(Permissions.UPDATE_USER);
+  if(!hasPerm){
+    return false
+  }
   try {
     await db.User.update({
       email,username

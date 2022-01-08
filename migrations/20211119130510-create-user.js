@@ -9,6 +9,16 @@ module.exports = {
         type: Sequelize.INTEGER,
         onDelete: 'CASCADE'
       },
+      roleId: {
+        type: Sequelize.INTEGER,
+        onDelete: 'CASCADE',
+        references: {
+          model: {
+            tableName: 'Roles'
+          },
+          key: 'id',
+        },
+      },
       username: {
         type: Sequelize.STRING
       },
