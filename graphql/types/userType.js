@@ -8,12 +8,12 @@ const userType = new GraphQLObjectType({
         id: { type: GraphQLID},
         email: { type: GraphQLString},
         username: { type: GraphQLString},
-        songs:{
+        /*songs:{
             type: GraphQLList(songType),
             resolve: async(source) => {
                 return await source.getSongs();
             }
-        },
+        },*/
         playlists:{
             type: GraphQLList(playlistType),
             resolve: async (source) => {

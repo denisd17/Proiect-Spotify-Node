@@ -4,6 +4,7 @@ const db = require("../models");
 const userType = require('./types/userType')
 const playlistType = require('./types/playlistType');
 const songType = require("./types/songType");
+const { likesSong } = require("../repository/users");
 
 
 
@@ -38,7 +39,8 @@ const queryType = new GraphQLObjectType({
             resolve: async() => {
                 return db.Playlist.findAll();
             }
-        }
+        },
+        
     }
 })
 

@@ -22,7 +22,7 @@ module.exports.createUser = async (args, context) => {
   const { user } = context;
   const hasPerm = await user.can(Permissions.CREATE_USER);
   if(!hasPerm){
-    return false
+   return false
   }
   const { email, password, username } = args;
   try {
@@ -63,6 +63,97 @@ module.exports.updateUser = async (args, context) => {
   } catch (e) {
     console.error(e);
     return null;
+  }
+}
+
+
+module.exports.likesSong = async (args, context) => {
+
+  const {user} = context;
+  const {id} = user;
+  userId = id;
+  const {songId} = args;
+
+  try{
+
+      const user = await db.User.findByPk(userId);
+      const song = await db.Song.findByPk(songId);
+      console.log(song);
+      const likes = await song.getUsers();
+
+      if (!user){
+
+          console.error("User not found!");
+      
+      }
+
+      if (!song) {
+
+          console.error ("Song not found!");
+     
+      }
+      for(let i = 0; i < likes.length; i++){
+        if (likes[i].id == userId){
+          console.error("Userul a mai apreciat");
+          return null;
+        }
+      }
+        
+      await user.addSong(song);
+      const updatedSong = await db.Song.findByPk(songId);
+      const updatedLikes = await updatedSong.getUsers();
+      
+
+      return updatedLikes.length;
+
+  } catch (error){
+      console.error(error)
+      return null;
+  }
+}
+
+
+module.exports.dislikesSong = async (args,context) => {
+
+  const {user} = context;
+  const userId = user.id;
+  const {songId} = args.songId;
+
+  try{
+
+      const user = await db.User.findByPk(userId);
+      const song = await db.Song.findByPk(songId);
+      const likes = await song.getUsers();
+      console.log(user, song);
+      if (!user){
+
+          throw new Error ("User not found!");
+      
+      }
+
+      if (!song) {
+
+          throw new Error ("Song not found!");
+     
+      }
+
+      for(let i = 0; i < likes.length; i++){
+        if (likes[i].id == userId){
+          likes.splice(i, 1);
+          const updatedSong = await db.Song.findByPk(songId);
+          const updatedLikes = await updatedSong.getUsers();
+          
+    
+          return updatedLikes.length;
+        }
+      }
+      return null;
+      
+      
+
+  } catch (error){
+      console.error("Something went wrong")
+      return null;
   }
 }
 

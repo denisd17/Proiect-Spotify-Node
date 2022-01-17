@@ -1,5 +1,6 @@
-const { GraphQLObjectType, GraphQLString, GraphQLID, GraphQLList } = require("graphql");
+const { GraphQLObjectType, GraphQLString, GraphQLID, GraphQLList, GraphQLInt } = require("graphql");
 const artistType = require("./artistType");
+const userType = require("./userType");
 
 const songType = new GraphQLObjectType({
     name: 'Song',
@@ -13,6 +14,12 @@ const songType = new GraphQLObjectType({
                 return await source.getArtists();
             }
         },
+        likes:{
+            type: GraphQLInt,
+            resolve:async(source)=>{
+                return await source.getUsers().length();
+            }
+        }
     
     }
 })
