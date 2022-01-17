@@ -21,8 +21,12 @@ module.exports = {
 
     await queryInterface.bulkInsert('Roles', [
       {
+        name: 'artist',
+        permissions: "READ_USER,READ_ARTIST,READ_SONG,CREATE_SONG,DELETE_SONG,UPDATE_SONG",
+      },
+      {
         name: 'user',
-        permissions: "READ_USER",
+        permissions: "READ_USER,READ_ARTIST,READ_SONG",
       },
       {
         name: 'admin',

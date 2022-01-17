@@ -18,10 +18,19 @@ module.exports = (sequelize, DataTypes) => {
         through: 'SongsArtists',
         onDelete: 'cascade'
       });
+      models.Artist.belongsTo(models.Role, {
+        foreignKey: 'roleId',
+      });
+    }
+    async can(permissionName){
+      const role = await this.getRole();
+      const permissions = role.permissions;
+      return permissions.indexOf(permissionName) !== -1;
     }
   };
   Artist.init({
-    name: DataTypes.STRING
+    name: DataTypes.STRING,
+    roleId: DataTypes.INTEGER,
   }, {
     sequelize,
     modelName: 'Artist',
