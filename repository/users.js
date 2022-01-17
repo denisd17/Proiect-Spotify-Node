@@ -117,7 +117,7 @@ module.exports.dislikesSong = async (args,context) => {
 
   const {user} = context;
   const userId = user.id;
-  const {songId} = args.songId;
+  const {songId} = args;
 
   try{
 
@@ -140,6 +140,7 @@ module.exports.dislikesSong = async (args,context) => {
       for(let i = 0; i < likes.length; i++){
         if (likes[i].id == userId){
           likes.splice(i, 1);
+          user.removeSong(song);
           const updatedSong = await db.Song.findByPk(songId);
           const updatedLikes = await updatedSong.getUsers();
           
