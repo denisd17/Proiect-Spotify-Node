@@ -15,7 +15,7 @@ module.exports.createAlbum = async (args,context)=> {
     const {
         name,
         link,
-    } = req.body
+    } = args
     try{
     const newAlbum = await db.Album.create({
         name,
@@ -24,81 +24,62 @@ module.exports.createAlbum = async (args,context)=> {
         updatedAt: new Date(),
     });
     
-    res.status(201).send(newAlbum);
+    return newAlbum;
 } catch(error){
-    res.send({
-        error:"Something went wrong"
-    })
+    console.error("Something went wrong")
+    return null;
 }
 }
 
 
 
-module.exports.getAlbumById = async ({params},res)=> {
-    try{
-    const key = params.id;
-    const search = await db.Album.findByPk(key);
-    if (search === null) {
-    res.send("Not found!")
-    } else {
-        res.send(search);
-    }
-    } catch(error){
-        res.send({
-            error:"Something went wrong"
-        })      
-    }
+module.exports.getAlbumById = async (id)=> {
+    return await db.Album.findByPk(id);
 }
 
 
-module.exports.updateAlbum = async (req,res)=> {
-    const id = req.params.id
-    const {
+module.exports.updateAlbum = async (args,context)=> {
+    const {id,
         name,
         link,
-    } = req.body
+    } = args
     try{
     await db.Album.update({
         name,
         link,
-        createdAt: new Date(),
-        updatedAt: new Date(),
     },
     {
     where:{
         id,
     }
     });
-    res.send(await db.Album.findByPk(id));
+    return await db.Album.findByPk(id);
 } catch(error){
-    res.send({
-        error:"Something went wrong"
-    })
+    console.error(e);
+    return null;
 }
 }
 
 
-module.exports.deleteAlbum = async (req,res)=> {
+module.exports.deleteAlbum = async (args,context)=> {
     try{
-    const id = req.params.id
+    const {id} = args 
     await db.Album.destroy({
         where: {
           id,
         }
       });
-      res.send("Success")
+      return "Album deleted";
     } catch(error){
-        res.send({
-            error:"Something went wrong"
-        })
+        console.error(error);
+        return null;
     }
 }
 
 
 
-module.exports.addAlbumArtist = async (req, res) => {
-    const artistId = req.params.artistId;
-    const albumId = req.params.albumId;
+module.exports.addAlbumArtist = async (args, context) => {
+    const {artistId, albumId} = args;
 
     try {
       const artist = await db.Artist.findByPk(artistId);
@@ -110,20 +91,17 @@ module.exports.addAlbumArtist = async (req, res) => {
       if(!album) {
         throw new Error("Album not found");
       }
-      await album.setArtists(artist);
+      await album.addArtist(artist);
 
-      const updatedAlbums = await db.Album.findByPk(albumId);
-      const updatedAlbumArtist = await updatedAlbums.getArtists();
+      const updatedAlbum = await db.Album.findByPk(albumId);
+      const updatedAlbumArtists = await updatedAlbum.getArtists();
 
       const response = {
-        ...updatedAlbums.toJSON(),
-        tags: updatedAlbumArtist,
+        ...updatedAlbumArtists.toJSON(),
       }
-      res.status(201).send(response);
+     return response;
     } catch (error) {
       console.error(error);
-      res.send({
-        error: "Something went wrong",
-      });
+     return null;
     }
 }

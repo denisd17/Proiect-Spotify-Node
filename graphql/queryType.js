@@ -1,10 +1,12 @@
-const { GraphQLObjectType, GraphQLString, GraphQLList, GraphQLID, GraphQLNonNull } = require("graphql");
+const { GraphQLObjectType, GraphQLString, GraphQLList, GraphQLID, GraphQLNonNull, GraphQLInt } = require("graphql");
 const db = require("../models");
 
 const userType = require('./types/userType')
 const playlistType = require('./types/playlistType');
 const songType = require("./types/songType");
 const { likesSong } = require("../repository/users");
+const albumType = require("./types/albumType");
+const { getAllAlbums, getAlbumById } = require("../repository/album");
 
 
 
@@ -40,7 +42,23 @@ const queryType = new GraphQLObjectType({
                 return db.Playlist.findAll();
             }
         },
-        
+        gelAllAlbums:{
+            type: new GraphQLList(albumType),
+            resolve: async() => {
+                return getAllAlbums();
+            }
+        },
+        getAlbumById:{
+            type: albumType,
+            args:{
+                id:{
+                    type: new GraphQLNonNull(GraphQLInt),
+                }
+            },
+            resolve: async(args,context) => {
+                return getAlbumById(args,context);
+            }
+        }
     }
 })
 
