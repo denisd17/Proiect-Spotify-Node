@@ -31,8 +31,6 @@ module.exports.createArtist = async (req,res)=> {
 }
 }
 
-
-
 module.exports.getArtistById = async ({params},res)=> {
     try{
     const key = params.id;

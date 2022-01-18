@@ -11,12 +11,26 @@ module.exports.createSong = async (args,context)=> {
       const newSong = await db.Song.create({
           name,
           link,
+          albumId,
           createdAt: new Date(),
           updatedAt: new Date(),
       });
+      const songArtists = await db.Album.findOne({
+        include: [{
+        model: db.Artist,
+      }],
+        where: {
+          id: albumId
+        }
+    })
+ 
+
+      for(let i = 0; i < songArtists.Artists.length; i++){
+        //console.log(songArtists.Artists[i]);
+        await newSong.addArtist(songArtists.Artists[i]);
+      }
+
       console.log(newSong);
-      const album = await db.Album.findByPk(albumId);
-      newSong.setAlbum(album);
       
       return newSong;
 
@@ -82,11 +96,13 @@ module.exports.updateSong = async (args, context) => {
     try{
         const {id} = args
 
-        await db.Song.destroy({
-            where: {
-                id,
-            }
-        });
+        const song = await db.Song.findByPk(id);
+
+        if(!song){
+          return "Song does not exist!";
+        }
+        
+        song.destroy();
 
         return "Song deleted";
 

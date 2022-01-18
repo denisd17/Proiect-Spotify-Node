@@ -3,12 +3,15 @@ const { createAlbum, updateAlbum, deleteAlbum, addAlbumArtist } = require("../re
 const loginHandler = require("../repository/login");
 const { updateSong, createSong, deleteSong } = require("../repository/song");
 const { createUser, updateUser, likesSong, dislikesSong } = require("../repository/users");
+const { createArtist, updateArtist, deleteArtist} = require("../repository/artist");
 const addAlbumArtistInputType = require("./inputTypes/addAlbumArtistInputType");
 const createAlbumInputType = require("./inputTypes/createAlbumInputType");
 const createSongInputType = require("./inputTypes/createSongInputType");
 const createUserInputType = require("./inputTypes/createUserInputType");
 const loginInputType = require("./inputTypes/loginInputType");
 const updateAlbumInputType = require("./inputTypes/updateAlbumInputType");
+const createArtistInputType = require("./inputTypes/createArtistInputType");
+const updateArtistInputType = require("./inputTypes/updateArtistInputType");
 const updateSongInputType = require("./inputTypes/updateSongInputType");
 const updateUserInputType = require("./inputTypes/updateUserInputType");
 const albumType = require("./types/albumType");
@@ -40,8 +43,8 @@ const mutationType = new GraphQLObjectType({
                     type:createUserInputType
                 }
             },
-            resolve: async(source,args) => {
-                return createUser(args.createUserInput)
+            resolve: async(source, args, context) => {
+                return createUser(args.createUserInput, context); 
             }
         },
         updateUser:{
@@ -97,7 +100,7 @@ const mutationType = new GraphQLObjectType({
                 }
             },
             resolve: async(source,args,context) => {
-                return createAlbum(args.createUserInput, context);
+                return createAlbum(args.createAlbumInput, context);
             }
         },
         updateAlbum:{
@@ -108,7 +111,7 @@ const mutationType = new GraphQLObjectType({
                 }
             },
             resolve: async(source,args,context) => {
-                return updateAlbum(args.updateUserInput, context);
+                return updateAlbum(args.updateAlbumInput, context);
             }
         },
         deleteAlbum:{
@@ -140,7 +143,7 @@ const mutationType = new GraphQLObjectType({
                     type: createSongInputType,
                 }
             },
-            resolve: async(args, context) => {
+            resolve: async(source, args, context) => {
                 return createSong(args.createSongInput, context);
             }
         },
@@ -151,10 +154,43 @@ const mutationType = new GraphQLObjectType({
                     type: new GraphQLNonNull(GraphQLInt),
                 }
             },
-            resolve: async(args,context) => {
+            resolve: async(source, args,context) => {
                 return deleteSong(args,context);
             }
-        }
+        },
+        createArtist:{
+            type: artistType,
+            args:{
+                createArtistInput:{
+                    type: createArtistInputType,
+                }
+            },
+            resolve: async(source,args,context) => {
+                return createArtist(args.createArtistInput, context);
+            }
+        },
+        updateArtist:{
+            type: artistType,
+            args:{
+                updateArtistInput: {
+                    type: updateArtistInputType,
+                }
+            },
+            resolve: async(source,args,context) => {
+                return updateArtist(args.updateArtistInput, context);
+            }
+        },
+        deleteArtist:{
+            type: GraphQLString,
+            args:{
+                id:{
+                    type: new GraphQLNonNull(GraphQLInt)
+                }
+            },
+            resolve: async(source, args, context) => {
+                return deleteArtist(args, context);
+            }
+        },
 
     },
 })

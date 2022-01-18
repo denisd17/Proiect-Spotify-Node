@@ -20,19 +20,19 @@ module.exports.getUserById = async (id) => {
 
 module.exports.createUser = async (args, context) => {
   const { user } = context;
-  const hasPerm = await user.can(Permissions.CREATE_USER);
-  if(!hasPerm){
-   return false
-  }
-  const { email, password, username } = args;
+
+  
+  const { email, password, username} = args;
   try {
     const newUser = await db.User.create({
         username,
         password,
         email,
-        roleId,
+        roleId : 1,
         
     });
+    console.log(newUser);
+    console.log(args);
 
     return newUser;
 

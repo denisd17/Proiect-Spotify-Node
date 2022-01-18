@@ -17,7 +17,8 @@ const songType = new GraphQLObjectType({
         likes:{
             type: GraphQLInt,
             resolve:async(source)=>{
-                return await source.getUsers().length();
+                const length = await source.getUsers().length;
+                return (length ? length : 0);
             }
         }
     

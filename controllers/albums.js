@@ -33,8 +33,6 @@ module.exports.createAlbum = async (req,res)=> {
 }
 }
 
-
-
 module.exports.getAlbumById = async ({params},res)=> {
     try{
     const key = params.id;
