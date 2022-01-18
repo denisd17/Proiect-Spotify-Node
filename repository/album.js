@@ -1,4 +1,5 @@
 const db = require('../models');
+const Permissions = require('../config/permissions');
 
 module.exports.getAllAlbums = async () => {
     try {
@@ -12,6 +13,11 @@ module.exports.getAllAlbums = async () => {
 }
 
 module.exports.createAlbum = async (args, context) => {
+    const { user } = context;
+    const hasPerm = await user.can(Permissions.CREATE_USER);
+    if(!hasPerm){
+      return false
+    }
     const {
         name,
         link,
@@ -39,6 +45,11 @@ module.exports.getAlbumById = async ({ id }, context) => {
 
 
 module.exports.updateAlbum = async (args, context) => {
+    const { user } = context;
+    const hasPerm = await user.can(Permissions.UPDATE_USER);
+    if(!hasPerm){
+      return false
+    }
     const { id,
         name,
         link,
@@ -62,6 +73,11 @@ module.exports.updateAlbum = async (args, context) => {
 
 
 module.exports.deleteAlbum = async (args, context) => {
+    const { user } = context;
+    const hasPerm = await user.can(Permissions.DELETE_USER);
+    if(!hasPerm){
+      return false
+    }
     try {
         const { id } = args
         const album = await db.Album.findByPk(id);
@@ -82,6 +98,15 @@ module.exports.deleteAlbum = async (args, context) => {
 
 
 module.exports.addAlbumArtist = async (args, context) => {
+    const { user } = context;
+    var hasPerm = await user.can(Permissions.CREATE_USER);
+    if(!hasPerm){
+      return false
+    }
+    hasPerm = await user.can(Permissions.CREATE_USER);
+    if(!hasPerm){
+      return false
+    }
     const { artistId, albumId } = args;
 
     try {

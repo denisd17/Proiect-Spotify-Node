@@ -1,4 +1,5 @@
 const db = require('../models');
+const Permissions = require('../config/permissions');
 
 module.exports.getAllArtists = async (args, context) => {
     try {
@@ -11,6 +12,11 @@ module.exports.getAllArtists = async (args, context) => {
 }
 
 module.exports.createArtist = async (args, context)=> {
+    const { user } = context;
+    const hasPerm = await user.can(Permissions.CREATE_USER);
+    if(!hasPerm){
+      return false
+    }
     const {
         name,
     } = args
@@ -33,6 +39,11 @@ module.exports.getArtistById = async (id)=> {
 }
 
 module.exports.updateArtist = async (args, context)=> {
+    const { user } = context;
+    const hasPerm = await user.can(Permissions.UPDATE_USER);
+    if(!hasPerm){
+      return false
+    }
     const {
         id,
         name,
@@ -55,6 +66,11 @@ module.exports.updateArtist = async (args, context)=> {
 }
 
 module.exports.deleteArtist = async (args, context)=> {
+    const { user } = context;
+    const hasPerm = await user.can(Permissions.DELETE_USER);
+    if(!hasPerm){
+      return false
+    }
     try{
     const {id} = args;
     

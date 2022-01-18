@@ -1,7 +1,12 @@
 const db = require('../models');
-
+const Permissions = require('../config/permissions');
 
 module.exports.createSong = async (args,context)=> {
+  const { user } = context;
+  const hasPerm = await user.can(Permissions.CREATE_SONG);
+  if(!hasPerm){
+    return false
+  }
 
   try{
       const {albumId,
@@ -66,11 +71,11 @@ module.exports.getSongById = async (args,context)=> {
 }
 
 module.exports.updateSong = async (args, context) => {
-    const { user } = context;
-    
-    if(!user) {
-      return null;
-    }
+  const { user } = context;
+  const hasPerm = await user.can(Permissions.UPDATE_SONG);
+  if(!hasPerm){
+    return false
+  }
   
 
     
@@ -92,6 +97,11 @@ module.exports.updateSong = async (args, context) => {
 
 
   module.exports.deleteSong = async (args,context)=> {
+    const { user } = context;
+    const hasPerm = await user.can(Permissions.DELETE_SONG);
+    if(!hasPerm){
+      return false
+    }
 
     try{
         const {id} = args

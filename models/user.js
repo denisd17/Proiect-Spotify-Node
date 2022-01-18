@@ -24,6 +24,7 @@ module.exports = (sequelize, DataTypes) => {
 
     async can(permissionName){
       const role = await this.getRole();
+      console.log(role);
       const permissions = role.permissions;
       return permissions.indexOf(permissionName) !== -1;
     }
