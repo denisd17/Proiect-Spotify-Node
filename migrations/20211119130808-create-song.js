@@ -7,8 +7,9 @@ module.exports = {
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER,
-        onDelete: 'CASCADE'
+        //onDelete: 'CASCADE'
       },
+      
       name: {
         type: Sequelize.STRING
       },
@@ -31,7 +32,7 @@ module.exports = {
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER,
-        onDelete: 'CASCADE'
+        //onDelete: 'CASCADE'
       },
       userId: {
         allowNull: false,
@@ -71,7 +72,7 @@ module.exports = {
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER,
-        onDelete: 'CASCADE'
+        //onDelete: 'CASCADE'
       },
       playlistId: {
         allowNull: false,

@@ -21,7 +21,7 @@ app.use('/graphql', authorizationMiddleware, graphqlHTTP({
   schema,
   graphiql: true,
 }))
-/*
+
 app.post("/login", loginHandler);
 
 app.get("/songs", authorizationMiddleware, getAllSongs);
@@ -61,7 +61,7 @@ app.put("/playlists/:id", authorizationMiddleware, updatePlaylist);
 app.delete("/playlists/:id", authorizationMiddleware, deletePlaylist);
 
 app.post("/playlists/:playlistId/songs/:songId", addPlaylistSong);
-*/
+
 app.listen(port, () => {
     console.log("Server started on", port);
   });

@@ -30,7 +30,7 @@ module.exports = {
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER,
-        onDelete: 'CASCADE'
+        //onDelete: 'CASCADE'
       },
       albumId: {
         allowNull: false,
@@ -68,18 +68,17 @@ module.exports = {
       'Songs',
       'albumId',
       {
-        type: Sequelize.INTEGER,
+        allowNull: false,
+      type: Sequelize.INTEGER,
+      onDelete: 'CASCADE',
       references: {
-      model: {
-        tableName: 'Albums'
-      },
-      key: 'id',
-    },
+        model: {
+          tableName: 'Albums'
+        },
+        key: 'id',
       }
-
-    )
-
-    
+    },
+    )    
   },
 
   down: async (queryInterface, Sequelize) => {

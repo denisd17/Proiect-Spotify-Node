@@ -12,19 +12,19 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       models.Song.belongsToMany(models.User, {
         through: 'Likes',
-        onDelete: 'cascade'
+        //onDelete: 'cascade'
       });
       models.Song.belongsToMany(models.Playlist, {
         through: 'PlaylistsSongs',
-        onDelete: 'cascade'
+        //onDelete: 'cascade'
       });
       models.Song.belongsToMany(models.Artist, {
         through: 'SongsArtists',
-        onDelete: 'cascade'
+        //onDelete: 'cascade'
       });
       models.Song.belongsTo(models.Album, {
         foreignKey: 'albumId',
-        onDelete: 'cascade'
+        //onDelete: 'cascade'
       });
     }
   };

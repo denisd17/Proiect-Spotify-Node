@@ -7,11 +7,11 @@ module.exports = {
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER,
-        onDelete: 'CASCADE'
+        //onDelete: 'CASCADE'
       },
       roleId: {
         type: Sequelize.INTEGER,
-        onDelete: 'CASCADE',
+        //onDelete: 'CASCADE',
         references: {
           model: {
             tableName: 'Roles'

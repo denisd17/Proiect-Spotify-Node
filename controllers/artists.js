@@ -77,7 +77,25 @@ module.exports.updateArtist = async (req,res)=> {
 
 module.exports.deleteArtist = async (req,res)=> {
     try{
-    const id = req.params.id
+    const id = req.params.id;
+    
+    const artistAlbums = await db.Album.findAll({
+      include: [{
+        model: db.Artist,
+        where: {id: id}
+      }]
+    });
+    
+    for(let i = 0; i < artistAlbums.length; i++) {
+      albumId = artistAlbums[i].id;
+      await db.Album.destroy({
+        where: {
+          id: albumId,
+        }
+      })
+    }
+    
+
     await db.Artist.destroy({
         where: {
           id,
